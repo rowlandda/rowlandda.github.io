@@ -1,3 +1,4 @@
+
 <!--suppress ALL -->
 <head>
     <title>Mario!</title>
@@ -19,6 +20,7 @@
             this.y = y;
             this.w = 0;
             this.h = 0;
+            this.left = false;
             this.image = new Image();
             this.image.src = image_url;
             this.update = update_method;
@@ -67,6 +69,26 @@
                 this.img5.src = "mario5.png";
                 this.img_arr.push(this.img5);
             }
+            //mirrored images to flip mario when going left
+            if (this.img_arr_L === undefined)
+            {
+                this.img_arr_L = [];
+                this.img1L = new Image();
+                this.img1L.src = "mario1L.png";
+                this.img_arr_L.push(this.img1L);
+                this.img2L = new Image();
+                this.img2L.src = "mario2L.png";
+                this.img_arr_L.push(this.img2L);
+                this.img3L = new Image();
+                this.img3L.src = "mario3L.png";
+                this.img_arr_L.push(this.img3L);
+                this.img4L = new Image();
+                this.img4L.src = "mario4L.png";
+                this.img_arr_L.push(this.img4L);
+                this.img5L = new Image();
+                this.img5L.src = "mario5L.png";
+                this.img_arr_L.push(this.img5L);
+            }
 
             this.model.scrollPos = this.x - 100;
             this.w = 60;
@@ -74,7 +96,10 @@
 
             //adjust the image according to right to left movement
             let marioFrame = Math.floor((Math.abs(this.x) / 20)) % 5;
-            this.image = this.img_arr[marioFrame];
+            if (this.left === false)
+                this.image = this.img_arr[marioFrame];
+            else
+                this.image = this.img_arr_L[marioFrame];
 
             if (this.frames_since_last_jump === undefined)
                 this.frames_since_last_jump = 0;
@@ -396,10 +421,12 @@
             let dy = 0;
             if(this.key_right)
             {
+                this.model.mario.left = false;
                 this.model.mario.x += 10;
             }
             if(this.key_left)
             {
+                this.model.mario.left = true;
                 this.model.mario.x -= 10;
             }
             if(this.key_space)
